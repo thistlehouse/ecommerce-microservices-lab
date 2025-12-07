@@ -9,4 +9,9 @@ public class ProductRepository : IProductRepository
     {
         ProductContext.Products.Add(product);
     }
+
+    public Product? GetProductById(Guid productId)
+    {
+        return ProductContext.Products.Find(p => p.Id == productId);
+    }
 }

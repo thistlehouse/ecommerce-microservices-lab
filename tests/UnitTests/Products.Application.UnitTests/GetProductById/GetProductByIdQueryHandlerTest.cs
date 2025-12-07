@@ -33,7 +33,7 @@ public sealed class GetProductByIdQueryHandlerTest
             new GetProductByIdQuery(product.Id),
             default);
 
-        result.Should().NotBeNull();
+        result.Value.Should().NotBeNull();
 
         _mockProductRepository.Verify(m => m.GetProductById(product.Id), Times.Once);
     }
@@ -48,8 +48,12 @@ public sealed class GetProductByIdQueryHandlerTest
             new GetProductByIdQuery(Guid.NewGuid()),
             default);
 
-        result.Should().NotBeNull();
+        result.Value.Should().BeNull();
+        result.IsError.Should().BeTrue();
+        result.FirstError.Code.Should().Be("ProductNotFound");
 
         _mockProductRepository.Verify(m => m.GetProductById(It.IsAny<Guid>()), Times.Once);
     }
 }
+
+// git commit -m "test: fix assertion to use result.Value instead of result"

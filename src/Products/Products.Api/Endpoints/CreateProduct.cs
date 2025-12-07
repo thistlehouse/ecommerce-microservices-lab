@@ -9,11 +9,11 @@ public sealed class CreateProduct : IEndpoint
     {
         app.MapPost(
             "products/create",
-            async (ISender send, CreateProductRequest request) =>
+            async (ISender sender, CreateProductRequest request) =>
         {
             CreateProductCommand command = new(request.Name, request.Description, request.Price);
 
-            CreateProductResponse response = await send.Send(command);
+            CreateProductResponse response = await sender.Send(command);
             return Results.Ok(response);
         });
     }

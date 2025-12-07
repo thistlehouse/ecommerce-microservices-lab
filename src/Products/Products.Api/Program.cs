@@ -18,6 +18,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseExceptionHandler("/error");
 app.MapEndpoints();
 app.UseHttpsRedirection();
 

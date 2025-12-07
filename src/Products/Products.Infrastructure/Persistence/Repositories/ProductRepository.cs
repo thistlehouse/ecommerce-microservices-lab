@@ -1,4 +1,4 @@
-using Products.Application.Abstractions.Repositories;
+using Products.Application.Common.Abstractions;
 using Products.Domain.Products;
 
 namespace Products.Infrastructure.Persistence.Repositories;

@@ -1,6 +1,6 @@
 using Products.Domain.Products;
 
-namespace Products.Application.Abstractions.Repositories;
+namespace Products.Application.Common.Abstractions;
 
 public interface IProductRepository
 {

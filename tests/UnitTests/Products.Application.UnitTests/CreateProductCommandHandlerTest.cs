@@ -1,8 +1,8 @@
 ﻿using ErrorOr;
 using FluentAssertions;
 using Moq;
-using Products.Application.Abstractions.Repositories;
 using Products.Application.Commands.CreateProducts;
+using Products.Application.Common.Abstractions;
 using Products.Contracts.Products;
 using Products.Domain.Products;
 

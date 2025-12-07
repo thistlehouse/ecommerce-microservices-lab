@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Products.Application.Abstractions.Repositories;
+using Products.Application.Common.Abstractions;
 using Products.Infrastructure.Persistence.Repositories;
 
 namespace Products.Infrastructure;

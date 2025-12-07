@@ -1,6 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
-using Products.Application.Abstractions.Repositories;
+using Products.Application.Common.Abstractions;
 using Products.Contracts.Products;
 using Products.Domain.Products;
 

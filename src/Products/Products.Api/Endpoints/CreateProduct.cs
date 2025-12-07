@@ -14,7 +14,7 @@ public sealed class CreateProduct : IEndpoint
             CreateProductCommand command = new(request.Name, request.Description, request.Price);
 
             CreateProductResponse response = await sender.Send(command);
-            return Results.Ok(response);
+            return Results.Created("products/create", response);
         });
     }
 

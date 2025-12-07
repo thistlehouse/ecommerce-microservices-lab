@@ -18,6 +18,7 @@ public sealed class GetProductByIdQueryHandlerTest
         _handler = new GetProductByIdQueryHandler(_mockProductRepository.Object);
     }
 
+    [Fact]
     public async Task HandleGetProductByIdQuery_WhenProductExists_ShouldReturnProduct()
     {
         Product product = Product.Create(
@@ -37,6 +38,7 @@ public sealed class GetProductByIdQueryHandlerTest
         _mockProductRepository.Verify(m => m.GetProductById(product.Id), Times.Once);
     }
 
+    [Fact]
     public async Task HandleGetProductByIdQuery_WhenProductDoesNotExists_ShouldReturn404()
     {
         _mockProductRepository.Setup(m => m.GetProductById(It.IsAny<Guid>()))

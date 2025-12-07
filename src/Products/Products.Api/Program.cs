@@ -1,6 +1,6 @@
 using Products.Api.Extensions;
 using Products.Application;
-using Products.Infrastructure.Persistence;
+using Products.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

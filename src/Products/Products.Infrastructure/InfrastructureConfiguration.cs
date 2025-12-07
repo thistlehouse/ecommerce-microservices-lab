@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Products.Application.Abstractions.Repositories;
 using Products.Infrastructure.Persistence.Repositories;
 
-namespace Products.Infrastructure.Persistence;
+namespace Products.Infrastructure;
 
 public static class InfrastructureConfiguration
 {

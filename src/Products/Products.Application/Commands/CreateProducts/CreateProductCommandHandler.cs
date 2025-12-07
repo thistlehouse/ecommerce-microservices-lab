@@ -1,15 +1,17 @@
-﻿using MediatR;
+﻿using ErrorOr;
+using MediatR;
 using Products.Application.Abstractions.Repositories;
+using Products.Contracts.Products;
 using Products.Domain.Products;
 
 namespace Products.Application.Commands.CreateProducts;
 
 public sealed class CreateProductCommandHandler(IProductRepository productRepository)
-    : IRequestHandler<CreateProductCommand, CreateProductResponse>
+    : IRequestHandler<CreateProductCommand, ErrorOr<CreateProductResult>>
 {
     private readonly IProductRepository _productRepository = productRepository;
 
-    public async Task<CreateProductResponse> Handle(CreateProductCommand command, CancellationToken cancellationToken)
+    public async Task<ErrorOr<CreateProductResult>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
 
@@ -20,6 +22,6 @@ public sealed class CreateProductCommandHandler(IProductRepository productReposi
 
         _productRepository.Add(product);
 
-        return new CreateProductResponse(product.Id);
+        return new CreateProductResult(product.Id);
     }
 }

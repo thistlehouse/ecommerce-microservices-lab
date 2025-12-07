@@ -1,5 +1,6 @@
 using MediatR;
 using Products.Application.Commands.CreateProducts;
+using Products.Contracts.Products;
 
 namespace Products.Api.Endpoints;
 
@@ -13,8 +14,11 @@ public sealed class CreateProduct : IEndpoint
         {
             CreateProductCommand command = new(request.Name, request.Description, request.Price);
 
-            CreateProductResponse response = await sender.Send(command);
-            return Results.Created("products/create", response);
+            var response = await sender.Send(command);
+
+            return response.Match(
+                product => Results.Created("products/create", product),
+                errors => Results.BadRequest(errors));
         });
     }
 

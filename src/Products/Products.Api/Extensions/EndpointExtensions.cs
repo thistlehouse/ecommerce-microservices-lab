@@ -8,9 +8,9 @@ public static class EndpointExtensions
 {
     public static IServiceCollection AddEndpoints(this IServiceCollection services)
     {
-        Assembly endpointAssemblies = Assembly.GetExecutingAssembly();
+        Assembly assembly = Assembly.GetExecutingAssembly();
 
-        IEnumerable<Type>? endpointTypes = endpointAssemblies
+        IEnumerable<Type>? endpointTypes = assembly
             .GetTypes()
             .Where(type =>
                 type is { IsAbstract: false, IsInterface: false } &&

@@ -30,6 +30,7 @@ public class CreateProductCommandHandlerTest
         ErrorOr<CreateProductResult> result = await handler.Handle(command, default);
 
         result.Should().NotBeNull();
+
         _mockProductRepository.Verify(m => m.Add(It.IsAny<Product>()), Times.Once);
     }
 }

@@ -9,7 +9,7 @@ public sealed class CreateProduct : IEndpoint
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPost(
-            "products/create",
+            "/products",
             async (ISender sender, CreateProductRequest request) =>
         {
             CreateProductCommand command = new(request.Name, request.Description, request.Price);

@@ -26,7 +26,7 @@ public sealed class GetProductByIdQueryHandlerTest
             "ProductTest1Description",
             100.00m);
 
-        _mockProductRepository.Setup(m => m.GetProductById(product.Id))
+        _mockProductRepository.Setup(m => m.GetById(product.Id))
             .Returns(product);
 
         ErrorOr<Product> result = await _handler.Handle(
@@ -35,13 +35,13 @@ public sealed class GetProductByIdQueryHandlerTest
 
         result.Value.Should().NotBeNull();
 
-        _mockProductRepository.Verify(m => m.GetProductById(product.Id), Times.Once);
+        _mockProductRepository.Verify(m => m.GetById(product.Id), Times.Once);
     }
 
     [Fact]
     public async Task HandleGetProductByIdQuery_WhenProductDoesNotExists_ShouldReturnNotFound()
     {
-        _mockProductRepository.Setup(m => m.GetProductById(It.IsAny<Guid>()))
+        _mockProductRepository.Setup(m => m.GetById(It.IsAny<Guid>()))
             .Returns((Product)null!);
 
         ErrorOr<Product> result = await _handler.Handle(
@@ -52,6 +52,6 @@ public sealed class GetProductByIdQueryHandlerTest
         result.IsError.Should().BeTrue();
         result.FirstError.Code.Should().Be("ProductNotFound");
 
-        _mockProductRepository.Verify(m => m.GetProductById(It.IsAny<Guid>()), Times.Once);
+        _mockProductRepository.Verify(m => m.GetById(It.IsAny<Guid>()), Times.Once);
     }
 }

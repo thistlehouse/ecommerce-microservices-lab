@@ -32,7 +32,7 @@ public sealed class UpdateProductCommandHandlerTest
             "New_ProductTestDescription",
             200.00m);
 
-        _mockProductRepository.Setup(m => m.GetProductById(product.Id))
+        _mockProductRepository.Setup(m => m.GetById(product.Id))
             .Returns(product);
 
         ErrorOr<Product> result = await _handler.Handle(command, default);
@@ -42,7 +42,7 @@ public sealed class UpdateProductCommandHandlerTest
         result.Value.Description.Should().Be(command.Description);
         result.Value.Price.Should().Be(command.Price);
 
-        _mockProductRepository.Verify(m => m.GetProductById(command.ProductId), Times.Once);
+        _mockProductRepository.Verify(m => m.GetById(command.ProductId), Times.Once);
         _mockProductRepository.Verify(m => m.Update(product), Times.Once);
     }
 
@@ -55,7 +55,7 @@ public sealed class UpdateProductCommandHandlerTest
             "New_ProductTestDescription",
             200.00m);
 
-        _mockProductRepository.Setup(m => m.GetProductById(It.IsAny<Guid>()))
+        _mockProductRepository.Setup(m => m.GetById(It.IsAny<Guid>()))
             .Returns((Product)null!);
 
         ErrorOr<Product> result = await _handler.Handle(command, default);
@@ -63,7 +63,7 @@ public sealed class UpdateProductCommandHandlerTest
         result.IsError.Should().BeTrue();
         result.FirstError.Code.Should().Be("ProductNotFound");
 
-        _mockProductRepository.Verify(m => m.GetProductById(command.ProductId), Times.Once);
+        _mockProductRepository.Verify(m => m.GetById(command.ProductId), Times.Once);
         _mockProductRepository.Verify(m => m.Update(It.IsAny<Product>()), Times.Never);
     }
 }

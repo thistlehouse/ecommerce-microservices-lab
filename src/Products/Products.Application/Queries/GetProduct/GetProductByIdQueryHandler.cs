@@ -14,7 +14,7 @@ public sealed class GetProductByIdQueryHandler(IProductRepository productReposit
     {
         await Task.CompletedTask;
 
-        if (_productRepository.GetProductById(query.ProductId) is not Product product)
+        if (_productRepository.GetById(query.ProductId) is not Product product)
         {
             return Error.NotFound("ProductNotFound", "Product not found.");
         }

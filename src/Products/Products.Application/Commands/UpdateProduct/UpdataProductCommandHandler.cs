@@ -14,7 +14,7 @@ public sealed class UpdateProductCommandHandler(IProductRepository productReposi
     {
         await Task.CompletedTask;
 
-        if (_productRepository.GetProductById(command.ProductId) is not Product product)
+        if (_productRepository.GetById(command.ProductId) is not Product product)
         {
             return Error.NotFound("ProductNotFound", "Product not found");
         }

@@ -10,7 +10,7 @@ public class ProductRepository : IProductRepository
         ProductContext.Products.Add(product);
     }
 
-    public Product? GetProductById(Guid productId)
+    public Product? GetById(Guid productId)
     {
         return ProductContext.Products.Find(p => p.Id == productId);
     }
@@ -24,6 +24,11 @@ public class ProductRepository : IProductRepository
             .Take(pageSize);
 
         return products;
+    }
+
+    public void Remove(Product product)
+    {
+        ProductContext.Products.Remove(product);
     }
 
     public void Update(Product product)

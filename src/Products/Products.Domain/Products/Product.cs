@@ -15,8 +15,31 @@ public sealed class Product
         Price = price;
     }
 
+    public void Update(string name, string description, decimal price)
+    {
+        Name = name;
+        Description = description;
+        Price = price;
+    }
+
+    public void SetName(string name)
+    {
+        Name = name;
+    }
+
+    public void SetDescription(string description)
+    {
+        Description = description;
+    }
+
+    public void SetPrice(decimal price)
+    {
+        Price = price;
+    }
+
     public static Product Create(string name, string description, decimal price)
     {
         return new(name, description, price);
     }
+
 }

@@ -25,4 +25,10 @@ public class ProductRepository : IProductRepository
 
         return products;
     }
+
+    public void Update(Product product)
+    {
+        int index = ProductContext.Products.IndexOf(product);
+        ProductContext.Products[index] = product;
+    }
 }

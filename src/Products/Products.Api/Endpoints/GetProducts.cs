@@ -2,6 +2,7 @@
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Products.Api.Errors;
 using Products.Application.Queries.GetProducts;
 
 namespace Products.Api.Endpoints;

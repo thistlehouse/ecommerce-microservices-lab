@@ -1,4 +1,5 @@
 using MediatR;
+using Products.Api.Errors;
 using Products.Application.Queries.GetProduct;
 
 namespace Products.Api.Endpoints;

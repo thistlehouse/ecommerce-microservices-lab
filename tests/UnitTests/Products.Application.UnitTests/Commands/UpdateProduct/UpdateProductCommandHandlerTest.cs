@@ -49,26 +49,21 @@ public sealed class UpdateProductCommandHandlerTest
     [Fact]
     public async Task HandleUpdateCommandHandler_WhenProductDoesNotExist_ShouldReturnNotFound()
     {
-        Product product = Product.Create(
-            "Old_ProductTestName",
-            "Old_ProductTest1Description",
-            100.00m);
-
         UpdateProductCommand command = new(
-            product.Id,
+            Guid.NewGuid(),
             "New_ProductTestName",
             "New_ProductTestDescription",
             200.00m);
 
-        _mockProductRepository.Setup(m => m.GetProductById(product.Id))
+        _mockProductRepository.Setup(m => m.GetProductById(It.IsAny<Guid>()))
             .Returns((Product)null!);
 
         ErrorOr<Product> result = await _handler.Handle(command, default);
 
         result.IsError.Should().BeTrue();
-        result.FirstError.Should().Be("ProductNotFound");
+        result.FirstError.Code.Should().Be("ProductNotFound");
 
         _mockProductRepository.Verify(m => m.GetProductById(command.ProductId), Times.Once);
-        _mockProductRepository.Verify(m => m.Update(product), Times.Never);
+        _mockProductRepository.Verify(m => m.Update(It.IsAny<Product>()), Times.Never);
     }
 }

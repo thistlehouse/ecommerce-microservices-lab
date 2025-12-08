@@ -14,4 +14,15 @@ public class ProductRepository : IProductRepository
     {
         return ProductContext.Products.Find(p => p.Id == productId);
     }
+
+    public IEnumerable<Product> GetProducts(int page, int pageSize, out int totalItems)
+    {
+        totalItems = ProductContext.Products.Count;
+
+        IEnumerable<Product> products = ProductContext.Products
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize);
+
+        return products;
+    }
 }

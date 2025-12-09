@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Products.Domain.Products;
 
 public sealed class Product
@@ -7,9 +9,12 @@ public sealed class Product
     public string Description { get; private set; } = string.Empty;
     public decimal Price { get; private set; }
 
-    private Product(string name, string description, decimal price, Guid? id = null)
+    private Product() { }
+
+    [JsonConstructor]
+    private Product(Guid id, string name, string description, decimal price)
     {
-        Id = id ?? Guid.NewGuid();
+        Id = id;
         Name = name;
         Description = description;
         Price = price;
@@ -39,7 +44,7 @@ public sealed class Product
 
     public static Product Create(string name, string description, decimal price)
     {
-        return new(name, description, price);
+        return new(Guid.NewGuid(), name, description, price);
     }
 
 }

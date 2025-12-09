@@ -8,6 +8,7 @@ public sealed class Product
     public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
     public decimal Price { get; private set; }
+    // Todo: Add CreatedAt and UpdatedAt
 
     private Product() { }
 

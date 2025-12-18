@@ -15,6 +15,7 @@ The system is designed with a modular microservices approach, following Clean Ar
 Each domain area is a separate service, e.g.:
 
 * Products Service – manages product catalog.
+* Inventory Service - manages how many units of each product are available.
 * Orders Service – handles order creation and processing.
 * Payments Service – processes payments and transactions.
 

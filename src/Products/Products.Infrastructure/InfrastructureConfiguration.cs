@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Products.Application.Common.Abstractions;
 using Products.Infrastructure.Persistence;
 using Products.Infrastructure.Persistence.Repositories;
+using Products.Infrastructure.Services;
 using StackExchange.Redis;
 
 namespace Products.Infrastructure;
@@ -16,6 +17,14 @@ public static class InfrastructureConfiguration
     {
         services.AddPersistence(configuration);
         services.AddCache(configuration);
+        services.AddServices();
+
+        return services;
+    }
+
+    public static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        services.AddTransient<ICreateItemStockService, CreateItemStockService>();
 
         return services;
     }

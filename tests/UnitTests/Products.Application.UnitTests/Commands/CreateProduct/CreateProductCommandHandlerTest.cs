@@ -12,11 +12,13 @@ public class CreateProductCommandHandlerTest
 {
     private readonly CreateProductCommandHandler handler;
     private readonly Mock<IProductRepository> _mockProductRepository;
+    private readonly Mock<ICreateItemStockService> _mockCreateItemSockService;
 
     public CreateProductCommandHandlerTest()
     {
         _mockProductRepository = new Mock<IProductRepository>();
-        handler = new CreateProductCommandHandler(_mockProductRepository.Object);
+        _mockCreateItemSockService = new Mock<ICreateItemStockService>();
+        handler = new CreateProductCommandHandler(_mockProductRepository.Object, _mockCreateItemSockService.Object);
     }
 
     [Fact]
@@ -32,5 +34,6 @@ public class CreateProductCommandHandlerTest
         result.Should().NotBeNull();
 
         _mockProductRepository.Verify(m => m.Add(It.IsAny<Product>()), Times.Once);
+        _mockCreateItemSockService.Verify(m => m.SendAsync(It.IsAny<Product>()), Times.Once);
     }
 }

@@ -1,8 +1,8 @@
 using System.Reflection;
+using Inventories.Api.Endpoints;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Products.Api.Endpoints;
 
-namespace Products.Api.Extensions;
+namespace Inventories.Api.Extensions;
 
 public static class EndpointExtensions
 {
@@ -16,9 +16,9 @@ public static class EndpointExtensions
                 type is { IsAbstract: false, IsInterface: false } &&
                 type.IsAssignableTo(typeof(IEndpoint)));
 
-        foreach (Type type in endpointTypes)
+        foreach (Type endpoint in endpointTypes)
         {
-            services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IEndpoint), type));
+            services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IEndpoint), endpoint));
         }
 
         return services;

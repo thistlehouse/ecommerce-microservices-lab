@@ -1,3 +1,4 @@
+using System.Text.Json;
 using MediatR;
 using Products.Api.Errors;
 using Products.Application.Commands.CreateProducts;
@@ -10,10 +11,9 @@ public sealed class CreateProduct : IEndpoint
     {
         app.MapPost(
             "/products",
-            async (ISender sender, CreateProductRequest request) =>
+            async (ISender sender, CreateProductRequest request, HttpClient httpClient) =>
         {
             CreateProductCommand command = new(request.Name, request.Description, request.Price);
-
             var response = await sender.Send(command);
 
             return response.Match(

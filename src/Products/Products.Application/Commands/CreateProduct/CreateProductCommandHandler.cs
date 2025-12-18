@@ -6,10 +6,13 @@ using Products.Domain.Products;
 
 namespace Products.Application.Commands.CreateProducts;
 
-public sealed class CreateProductCommandHandler(IProductRepository productRepository)
+public sealed class CreateProductCommandHandler(
+    IProductRepository productRepository,
+    ICreateItemStockService createItemStock)
     : IRequestHandler<CreateProductCommand, ErrorOr<CreateProductResult>>
 {
     private readonly IProductRepository _productRepository = productRepository;
+    private readonly ICreateItemStockService _createItemStock = createItemStock;
 
     public async Task<ErrorOr<CreateProductResult>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
@@ -20,7 +23,24 @@ public sealed class CreateProductCommandHandler(IProductRepository productReposi
             command.Description,
             command.Price);
 
-        _productRepository.Add(product);
+        // Todo
+        // this will change, but for now will suffice.
+        try
+        {
+            await _createItemStock.SendAsync(product);
+        }
+        catch (HttpRequestException e)
+        {
+            // Todo
+            // use proper log afterwards
+            Console.WriteLine("An HttpRequestException has occurred");
+            Console.WriteLine($"Message: {e.Message}");
+            Console.WriteLine($"Message: {e.TargetSite}");
+        }
+        finally
+        {
+            _productRepository.Add(product);
+        }
 
         return new CreateProductResult(product.Id);
     }

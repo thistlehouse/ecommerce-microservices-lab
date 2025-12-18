@@ -10,6 +10,10 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHttpClient("Inventory", builder =>
+{
+    builder.BaseAddress = new Uri("http://localhost:5209");
+});
 
 var app = builder.Build();
 

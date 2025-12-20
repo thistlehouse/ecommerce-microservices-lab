@@ -1,7 +1,6 @@
 using FluentValidation;
-using Inventories.Application.Commands.CreateStockItem;
 
-namespace Inventories.Application.Commands.CreateItemStock;
+namespace Inventories.Application.Commands.CreateStockItem;
 
 public class CreateStockItemCommandValidator : AbstractValidator<CreateStockItemCommand>
 {

@@ -24,7 +24,7 @@ public static class InfrastructureConfiguration
 
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddTransient<ICreateItemStockService, CreateItemStockService>();
+        services.AddTransient<ICreateStockItemService, CreateStockItemService>();
 
         return services;
     }

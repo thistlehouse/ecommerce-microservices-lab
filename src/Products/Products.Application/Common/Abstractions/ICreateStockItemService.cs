@@ -2,7 +2,7 @@ using Products.Domain.Products;
 
 namespace Products.Application.Common.Abstractions;
 
-public interface ICreateItemStockService
+public interface ICreateStockItemService
 {
     Task SendAsync(Product product);
 }

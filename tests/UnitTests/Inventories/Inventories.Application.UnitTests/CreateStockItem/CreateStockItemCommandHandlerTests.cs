@@ -1,6 +1,5 @@
 ﻿using ErrorOr;
 using FluentAssertions;
-using Inventories.Application.Commands.CreateItemStock;
 using Inventories.Application.Commands.CreateStockItem;
 using Inventories.Domain.StockItems;
 using MediatR;
@@ -46,7 +45,7 @@ public class CreateStockItemCommandHandlerTests
         ErrorOr<Unit> result = await _handler.Handle(command, default);
 
         result.Should().NotBeNull();
-        result.FirstError.Code.Should().Be("ItemStockExists");
+        result.FirstError.Code.Should().Be("StockItemExists");
 
         _mockStockItemRepository.Verify(m => m.GetById(It.IsAny<Guid>()), Times.Once);
         _mockStockItemRepository.Verify(m => m.Add(It.IsAny<StockItem>()), Times.Never);

@@ -25,11 +25,11 @@ namespace Inventories.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemStock", x => x.Id);
+                    table.PrimaryKey("PK_StockItem", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemStock_Id",
+                name: "IX_StockItem_Id",
                 schema: "Inventories",
                 table: "StockItem",
                 column: "Id");

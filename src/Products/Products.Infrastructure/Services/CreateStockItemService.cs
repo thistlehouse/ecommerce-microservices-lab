@@ -4,18 +4,18 @@ using Products.Domain.Products;
 
 namespace Products.Infrastructure.Services;
 
-public sealed class CreateItemStockService(IHttpClientFactory factory) : ICreateItemStockService
+public sealed class CreateStockItemService(IHttpClientFactory factory) : ICreateStockItemService
 {
     private readonly IHttpClientFactory _factory = factory;
 
     public async Task SendAsync(Product product)
     {
-        ItemStockRequest itemStockRequest = new(product.Id, product.Name, 1);
+        StockItemRequest stockItemRequest = new(product.Id, product.Name, 1);
         HttpClient httpClient = _factory.CreateClient("Inventory");
-        HttpResponseMessage response = await httpClient.PostAsJsonAsync("/inventory", itemStockRequest);
+        HttpResponseMessage response = await httpClient.PostAsJsonAsync("/inventory", stockItemRequest);
 
         response.EnsureSuccessStatusCode();
     }
 
-    private record ItemStockRequest(Guid Id, string Name, int Units);
+    private record StockItemRequest(Guid Id, string Name, int Units);
 }

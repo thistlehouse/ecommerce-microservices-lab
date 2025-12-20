@@ -3,7 +3,7 @@ using Inventories.Application.Commands.CreateStockItem;
 using Inventories.Domain.StockItems;
 using MediatR;
 
-namespace Inventories.Application.Commands.CreateItemStock;
+namespace Inventories.Application.Commands.CreateStockItem;
 
 public sealed class CreateStockItemCommandHandler(IStockItemRepository stockItemRepository)
     : IRequestHandler<CreateStockItemCommand, ErrorOr<Unit>>
@@ -17,7 +17,7 @@ public sealed class CreateStockItemCommandHandler(IStockItemRepository stockItem
         StockItem? item = _stockItemRepository.GetById(command.Id);
         if (item is not null)
         {
-            return Error.Conflict("ItemStockExists", "Item Stock already exists");
+            return Error.Conflict("StockItemExists", "Stock Item already exists");
         }
 
         StockItem stockItem = StockItem.Create(command.Id, command.Name, command.Units);

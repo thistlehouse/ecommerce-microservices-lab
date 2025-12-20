@@ -12,12 +12,12 @@ public class CreateProductCommandHandlerTest
 {
     private readonly CreateProductCommandHandler handler;
     private readonly Mock<IProductRepository> _mockProductRepository;
-    private readonly Mock<ICreateItemStockService> _mockCreateItemSockService;
+    private readonly Mock<ICreateStockItemService> _mockCreateItemSockService;
 
     public CreateProductCommandHandlerTest()
     {
         _mockProductRepository = new Mock<IProductRepository>();
-        _mockCreateItemSockService = new Mock<ICreateItemStockService>();
+        _mockCreateItemSockService = new Mock<ICreateStockItemService>();
         handler = new CreateProductCommandHandler(_mockProductRepository.Object, _mockCreateItemSockService.Object);
     }
 

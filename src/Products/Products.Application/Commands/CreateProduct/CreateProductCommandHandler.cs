@@ -8,11 +8,11 @@ namespace Products.Application.Commands.CreateProducts;
 
 public sealed class CreateProductCommandHandler(
     IProductRepository productRepository,
-    ICreateItemStockService createItemStock)
+    ICreateStockItemService createStockItem)
     : IRequestHandler<CreateProductCommand, ErrorOr<CreateProductResult>>
 {
     private readonly IProductRepository _productRepository = productRepository;
-    private readonly ICreateItemStockService _createItemStock = createItemStock;
+    private readonly ICreateStockItemService _createStockItem = createStockItem;
 
     public async Task<ErrorOr<CreateProductResult>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
@@ -27,7 +27,7 @@ public sealed class CreateProductCommandHandler(
         // this will change, but for now will suffice.
         try
         {
-            await _createItemStock.SendAsync(product);
+            await _createStockItem.SendAsync(product);
         }
         catch (HttpRequestException e)
         {

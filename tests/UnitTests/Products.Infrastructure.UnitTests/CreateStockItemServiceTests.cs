@@ -7,11 +7,11 @@ using Products.Infrastructure.Services;
 
 namespace Products.Infrastructure.UnitTests;
 
-public class CreateItemStockServiceTests
+public class CreateStockItemServiceTests
 {
 
     [Fact]
-    public async Task Service_ShouldSendAsyncItemStock_And_WhenResponseIs200()
+    public async Task Service_ShouldSendAsyncStockItem_And_WhenResponseIs200()
     {
         Mock<HttpMessageHandler> _mockHttpMessageHandler = new();
 
@@ -33,7 +33,7 @@ public class CreateItemStockServiceTests
         factory.Setup(f => f.CreateClient(It.IsAny<string>()))
             .Returns(client);
 
-        CreateItemStockService service = new(factory.Object);
+        CreateStockItemService service = new(factory.Object);
         Func<Task> act = () => service.SendAsync(Product.Create("ProductTest", "ProductTest", 10m));
 
         await act.Should().NotThrowAsync();
@@ -46,7 +46,7 @@ public class CreateItemStockServiceTests
     }
 
     [Fact]
-    public async Task Service_ShouldNotSendAsyncItemStock_And_WhenResponseIsNotSuccess()
+    public async Task Service_ShouldNotSendAsyncStockItem_And_WhenResponseIsNotSuccess()
     {
         Mock<HttpMessageHandler> _mockHttpMessageHandler = new();
 
@@ -68,7 +68,7 @@ public class CreateItemStockServiceTests
         factory.Setup(f => f.CreateClient(It.IsAny<string>()))
             .Returns(client);
 
-        CreateItemStockService service = new(factory.Object);
+        CreateStockItemService service = new(factory.Object);
         Func<Task> act = () => service.SendAsync(Product.Create("ProductTest", "ProductTest", 10m));
 
         await act.Should().ThrowAsync();

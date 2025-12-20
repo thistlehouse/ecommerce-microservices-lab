@@ -14,7 +14,7 @@ public class CreateProductValidator : AbstractValidator<CreateProductCommand>
             .MaximumLength(50)
             .WithMessage("Name must be between 3 and 50 characters");
 
-        RuleFor(p => p.Name)
+        RuleFor(p => p.Description)
             .NotEmpty()
             .NotEmpty()
             .MinimumLength(3)

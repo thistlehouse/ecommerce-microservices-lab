@@ -14,7 +14,7 @@ public sealed class DeleteProductCommandHandler(IProductRepository productReposi
     {
         await Task.CompletedTask;
 
-        if (productRepository.GetById(command.ProductId) is not Product product)
+        if (_productRepository.GetById(command.ProductId) is not Product product)
         {
             return Error.NotFound("ProductNotFound", "Product was not found.");
         }

@@ -19,7 +19,7 @@ public sealed class DeleteProduct : IEndpoint
             ErrorOr<DeleteProductResult> response = await sender.Send(command, default);
 
             return response.Match(
-                result => Results.NoContent(),
+                _ => Results.NoContent(),
                 errors => ApiErrors.Problem(errors));
         });
     }

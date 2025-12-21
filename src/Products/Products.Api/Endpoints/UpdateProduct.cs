@@ -25,7 +25,7 @@ public sealed class UpdateProduct : IEndpoint
             ErrorOr<Product> response = await sender.Send(command, default);
 
             return response.Match(
-                product => Results.NoContent(),
+                _ => Results.NoContent(),
                 errors => ApiErrors.Problem(errors));
         });
     }

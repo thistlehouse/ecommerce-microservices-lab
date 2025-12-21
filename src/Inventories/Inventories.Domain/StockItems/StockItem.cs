@@ -17,4 +17,16 @@ public class StockItem
     {
         return new(id, name, units);
     }
+
+    public void SetUnits(StockUnitOperation operation, int units)
+    {
+        Units += operation switch
+        {
+            StockUnitOperation.Increase => units,
+            StockUnitOperation.Decrease => -units,
+            _ => throw new ArgumentException("Unknown operation"),
+        };
+
+        if (Units < 0) Units = 0;
+    }
 }

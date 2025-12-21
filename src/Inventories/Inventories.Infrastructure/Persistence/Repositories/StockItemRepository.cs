@@ -20,13 +20,13 @@ public sealed class StockItemRepository(InventoryDbContext context) : IStockItem
         return stockItem;
     }
 
-    public IEnumerable<StockItem?> GetByIds(List<Guid> guids)
+    public IEnumerable<StockItem?> GetByIds(IEnumerable<Guid> guids)
     {
         IEnumerable<StockItem?> items = _context.StockItems.Where(s => guids.Contains(s.Id));
         return items;
     }
 
-    public void PatchUnits(List<StockItem> stockItems)
+    public void PatchUnits(IEnumerable<StockItem> stockItems)
     {
         _context.StockItems.ExecuteUpdate(s => s.SetProperty(si => si.Units, si => si.Units));
         _context.SaveChanges();

@@ -6,6 +6,6 @@ public interface IStockItemRepository
 {
     void Add(StockItem stockItem);
     StockItem? GetById(Guid stockItemId);
-    IEnumerable<StockItem?> GetByIds(List<Guid> guids);
-    void PatchUnits(List<StockItem> stockItems);
+    IEnumerable<StockItem?> GetByIds(IEnumerable<Guid> guids);
+    void PatchUnits(IEnumerable<StockItem> stockItems);
 }

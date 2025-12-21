@@ -11,30 +11,27 @@ public sealed class PatchStockItemUnitsCommandHandler(IStockItemRepository stock
 
     public async Task<ErrorOr<Unit>> Handle(PatchStockItemsCommand command, CancellationToken cancellationToken)
     {
+        // TODO
+        // Treat scenario where ids might be a miss
+
         await Task.CompletedTask;
 
         List<Guid> stockItemIds = [.. command.StockItems.Select(s => s.StockItemId)];
         List<StockItem?> stockItems = _stockItemRepository.GetByIds(stockItemIds).ToList();
-
-        // TODO
-        // All ids must return a stock item
-        // If one is a miss, an error must be returned.
         if (stockItems.Count == 0)
         {
             return Error.NotFound("StockItemsNotFound", "Stock items was not found");
         }
 
+        var dictCommandItems = command.StockItems.ToDictionary(c => c.StockItemId);
+
         foreach (StockItem? stockItem in stockItems)
         {
-            (StockUnitOperation operation, int units) = command.StockItems
-                .Where(c => c.StockItemId == stockItem.Id)
-                .Select(c => (c.Operation, c.Units))
-                .First();
-
-            stockItem.SetUnits(operation, units);
+            var commandItem = dictCommandItems[stockItem!.Id];
+            stockItem.SetUnits(commandItem.Operation, commandItem.Units);
         }
 
-        _stockItemRepository.PatchUnits(stockItems);
+        _stockItemRepository.PatchUnits(stockItems!);
 
         return new Unit();
     }

@@ -16,7 +16,7 @@ public sealed class PatchStockItemUnitsCommandHandler(IStockItemRepository stock
 
         await Task.CompletedTask;
 
-        List<Guid> stockItemIds = [.. command.StockItems.Select(s => s.StockItemId)];
+        List<Guid> stockItemIds = command.StockItems.Select(s => s.StockItemId).ToList();
         List<StockItem?> stockItems = _stockItemRepository.GetByIds(stockItemIds).ToList();
         if (stockItems.Count == 0)
         {

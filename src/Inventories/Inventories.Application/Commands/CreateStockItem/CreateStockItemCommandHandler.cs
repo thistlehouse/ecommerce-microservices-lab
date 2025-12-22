@@ -1,5 +1,4 @@
 using ErrorOr;
-using Inventories.Application.Commands.CreateStockItem;
 using Inventories.Domain.StockItems;
 using MediatR;
 

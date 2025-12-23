@@ -6,5 +6,4 @@ public interface IUserRepository
 {
     void Create(User user);
     User? GetByEmail(string email);
-
 }

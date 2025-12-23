@@ -5,7 +5,7 @@ using Inventories.Domain.StockItems;
 using MediatR;
 using Moq;
 
-namespace Inventories.Application.UnitTests;
+namespace Inventories.Application.UnitTests.CreateStockItem;
 
 public class CreateStockItemCommandHandlerTests
 {

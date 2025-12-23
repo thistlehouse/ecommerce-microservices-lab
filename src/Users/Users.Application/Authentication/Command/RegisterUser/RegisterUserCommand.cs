@@ -1,8 +1,8 @@
 using ErrorOr;
 using MediatR;
-using Users.Application.Auth.Common;
+using Users.Application.Authentication.Common;
 
-namespace Users.Application.Auth.Command.RegisterUser;
+namespace Users.Application.Authentication.Command.RegisterUser;
 
 public sealed record RegisterUserCommand(
     string FirstName,

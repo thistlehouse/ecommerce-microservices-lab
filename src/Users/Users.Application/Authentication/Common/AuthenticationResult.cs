@@ -1,4 +1,4 @@
-namespace Users.Application.Auth.Common;
+namespace Users.Application.Authentication.Common;
 
 public sealed record AuthenticationResult(
     Guid Id,

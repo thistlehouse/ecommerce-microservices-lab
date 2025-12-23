@@ -1,11 +1,11 @@
 using ErrorOr;
 using MediatR;
-using Users.Application.Auth.Common;
+using Users.Application.Authentication.Common;
 using Users.Application.Common.Abstractions.Repositories;
 using Users.Application.Common.Abstractions.Services;
 using Users.Domain;
 
-namespace Users.Application.Auth.Command.RegisterUser;
+namespace Users.Application.Authentication.Command.RegisterUser;
 
 public sealed class RegisterUserCommandHandler(
     IUserRepository userRepository,

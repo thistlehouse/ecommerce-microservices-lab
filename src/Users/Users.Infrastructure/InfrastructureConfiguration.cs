@@ -5,9 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Users.Application.Common.Abstractions.Repositories;
 using Users.Application.Common.Abstractions.Services;
 using Users.Infrastructure.Authentication;
 using Users.Infrastructure.Persistence;
+using Users.Infrastructure.Persistence.Repositories;
 
 namespace Users.Infrastructure;
 
@@ -31,7 +33,7 @@ public static class InfrastructureConfiguration
         ConfigurationManager configuration)
     {
         JwtSettings jwtSettings = new();
-        configuration.Bind(jwtSettings);
+        configuration.Bind(JwtSettings.SectionName, jwtSettings);
 
         services.AddSingleton(Options.Create(jwtSettings));
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
@@ -55,6 +57,8 @@ public static class InfrastructureConfiguration
         this IServiceCollection services,
         ConfigurationManager configuration)
     {
+        services.AddScoped<IUserRepository, UserRepository>();
+
         services.AddDbContext<UserDbContext>(options =>
             options.UseNpgsql(
                 configuration.GetConnectionString("ECommerceDatabase"),

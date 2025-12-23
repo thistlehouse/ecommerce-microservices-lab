@@ -6,7 +6,7 @@ namespace Users.Api.Extensions;
 
 public static class EndpointExtensions
 {
-    public static IServiceCollection AddEndpoints(this IServiceCollection services)
+    public static IServiceCollection AddEndPoints(this IServiceCollection services)
     {
         Assembly assembly = Assembly.GetExecutingAssembly();
 

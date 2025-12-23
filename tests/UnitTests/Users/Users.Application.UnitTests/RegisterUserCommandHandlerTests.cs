@@ -1,8 +1,8 @@
 ﻿using ErrorOr;
 using FluentAssertions;
 using Moq;
-using Users.Application.Auth.Command.RegisterUser;
-using Users.Application.Auth.Common;
+using Users.Application.Authentication.Command.RegisterUser;
+using Users.Application.Authentication.Common;
 using Users.Application.Common.Abstractions.Repositories;
 using Users.Application.Common.Abstractions.Services;
 using Users.Domain;

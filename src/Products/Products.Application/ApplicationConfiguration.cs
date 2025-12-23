@@ -17,7 +17,7 @@ public static class ApplicationConfiguration
 
         services.AddScoped(
             typeof(IPipelineBehavior<,>),
-            typeof(ValidationBehavior<,>));
+            typeof(ValidationBehaviour<,>));
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 

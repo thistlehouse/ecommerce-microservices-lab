@@ -9,7 +9,9 @@ builder.Services
     .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddEndPoints();
+builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 

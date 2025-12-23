@@ -33,6 +33,8 @@ public sealed class RegisterUserCommandHandler(
             command.Email,
             command.Password);
 
+        // TODO: hash password
+
         string token = _jwtTokenGenerator.GenerateToken(user);
         _userRepository.Create(user);
         AuthenticationResult result = new(user.Id, command.Email, token);

@@ -21,6 +21,7 @@ public sealed class DeleteProduct : IEndpoint
             return response.Match(
                 _ => Results.NoContent(),
                 errors => ApiErrors.Problem(errors));
-        });
+        })
+        .RequireAuthorization("product.delete");
     }
 }

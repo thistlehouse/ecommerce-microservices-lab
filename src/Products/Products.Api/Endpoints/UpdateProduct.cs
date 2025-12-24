@@ -27,7 +27,8 @@ public sealed class UpdateProduct : IEndpoint
             return response.Match(
                 _ => Results.NoContent(),
                 errors => ApiErrors.Problem(errors));
-        });
+        })
+        .RequireAuthorization("product.update");
     }
 }
 

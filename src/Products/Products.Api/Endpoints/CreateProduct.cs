@@ -18,7 +18,8 @@ public sealed class CreateProduct : IEndpoint
             return response.Match(
                 product => Results.Created("products/create", product),
                 errors => ApiErrors.Problem(errors));
-        });
+        })
+        .RequireAuthorization("product.create");
     }
 
     public record CreateProductRequest(string Name, string Description, decimal Price);

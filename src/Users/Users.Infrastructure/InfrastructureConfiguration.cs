@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Users.Application.Common.Abstractions.Repositories;
 using Users.Application.Common.Abstractions.Services;
 using Users.Infrastructure.Authentication;
+using Users.Infrastructure.Authorization;
 using Users.Infrastructure.Persistence;
 using Users.Infrastructure.Persistence.Repositories;
 
@@ -33,9 +34,13 @@ public static class InfrastructureConfiguration
         ConfigurationManager configuration)
     {
         JwtSettings jwtSettings = new();
+        PermissionSettings permissionSettings = new();
+
         configuration.Bind(JwtSettings.SectionName, jwtSettings);
+        configuration.Bind(PermissionSettings.SectionName, permissionSettings);
 
         services.AddSingleton(Options.Create(jwtSettings));
+        services.AddSingleton(Options.Create(permissionSettings));
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)

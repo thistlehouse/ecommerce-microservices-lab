@@ -4,5 +4,6 @@ namespace Users.Application.Common.Abstractions.Services;
 
 public interface IJwtTokenGenerator
 {
-    string GenerateToken(User user);
+    string GenerateUserToken(User user);
+    string GenerateServiceToken(ServiceIdentity serviceIdentity);
 }

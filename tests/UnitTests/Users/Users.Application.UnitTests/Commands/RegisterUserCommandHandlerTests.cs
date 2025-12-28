@@ -33,7 +33,7 @@ public class RegisterUserCommandHandlerTests
 
         string token = "token.token.token";
 
-        _mockJwtGenerator.Setup(m => m.GenerateToken(It.IsAny<User>()))
+        _mockJwtGenerator.Setup(m => m.GenerateUserToken(It.IsAny<User>()))
             .Returns(token);
 
         ErrorOr<AuthenticationResult> result = await _handler.Handle(command, default);
@@ -43,7 +43,7 @@ public class RegisterUserCommandHandlerTests
         result.Value.Token.Should().Be(token);
 
         _mockUserRepository.Verify(m => m.Create(It.IsAny<User>()), Times.Once);
-        _mockJwtGenerator.Verify(m => m.GenerateToken(It.IsAny<User>()), Times.Once);
+        _mockJwtGenerator.Verify(m => m.GenerateUserToken(It.IsAny<User>()), Times.Once);
     }
 
     [Fact]
@@ -69,6 +69,6 @@ public class RegisterUserCommandHandlerTests
         result.FirstError.Type.Should().Be(ErrorType.Conflict);
 
         _mockUserRepository.Verify(m => m.Create(It.IsAny<User>()), Times.Never);
-        _mockJwtGenerator.Verify(m => m.GenerateToken(It.IsAny<User>()), Times.Never);
+        _mockJwtGenerator.Verify(m => m.GenerateUserToken(It.IsAny<User>()), Times.Never);
     }
 }

@@ -35,7 +35,7 @@ public sealed class RegisterUserCommandHandler(
 
         // TODO: hash password
 
-        string token = _jwtTokenGenerator.GenerateToken(user);
+        string token = _jwtTokenGenerator.GenerateUserToken(user);
         _userRepository.Create(user);
         AuthenticationResult result = new(user.Id, command.Email, token);
         return result;

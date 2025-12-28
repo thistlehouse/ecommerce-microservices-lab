@@ -29,9 +29,9 @@ if (app.Environment.IsDevelopment())
 
 app.ApplyMigrations();
 app.UseExceptionHandler();
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapEndpoints();
-app.UseHttpsRedirection();
 
 app.Run();

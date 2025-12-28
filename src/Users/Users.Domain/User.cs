@@ -10,7 +10,7 @@ public class User
     public string Email { get; private set; } = string.Empty;
     public bool IsEmailVerified { get; private set; }
     public string Password { get; private set; } = string.Empty;
-    public UserType UserType { get; private set; } = UserType.Customer;
+    public UserType UserType { get; private set; } = UserType.Admin;
 
     private User(Guid id, string firstName, string lastName, string email, string password)
     {

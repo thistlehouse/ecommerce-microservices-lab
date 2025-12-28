@@ -8,7 +8,7 @@ public sealed class PermissionHandler : AuthorizationHandler<PermissionRequireme
         AuthorizationHandlerContext context,
         PermissionRequirement requirement)
     {
-        if (context.User.HasClaim("permission", requirement.Permission))
+        if (context.User.HasClaim("permissions", requirement.Permission))
         {
             context.Succeed(requirement);
         }

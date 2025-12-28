@@ -1,16 +1,14 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Users.Application.Common.Abstractions.Repositories;
 using Users.Application.Common.Abstractions.Services;
 using Users.Infrastructure.Authentication;
 using Users.Infrastructure.Authorization;
 using Users.Infrastructure.Persistence;
 using Users.Infrastructure.Persistence.Repositories;
+using Users.Infrastructure.Services;
 
 namespace Users.Infrastructure;
 
@@ -24,12 +22,12 @@ public static class InfrastructureConfiguration
 
         services
             .AddPersistence(configuration)
-            .AddAuth(configuration);
+            .AddAuthentication(configuration);
 
         return services;
     }
 
-    private static IServiceCollection AddAuth(
+    private static IServiceCollection AddAuthentication(
         this IServiceCollection services,
         ConfigurationManager configuration)
     {
@@ -41,7 +39,12 @@ public static class InfrastructureConfiguration
 
         services.AddSingleton(Options.Create(jwtSettings));
         services.AddSingleton(Options.Create(permissionSettings));
+
+        services.Configure<ServiceIdentitiesSettings>(
+            configuration.GetSection(ServiceIdentitiesSettings.SectionName));
+
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddSingleton<IServiceIdentityProvider, ServiceIdentityProvider>();
 
         return services;
     }

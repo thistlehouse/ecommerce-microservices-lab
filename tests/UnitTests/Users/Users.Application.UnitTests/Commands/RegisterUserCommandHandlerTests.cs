@@ -5,6 +5,7 @@ using Users.Application.Authentication.Command.RegisterUser;
 using Users.Application.Authentication.Common;
 using Users.Application.Common.Abstractions.Repositories;
 using Users.Application.Common.Abstractions.Services;
+using Users.Application.Common.Abstractions.Services.EmailNotifications;
 using Users.Domain;
 
 namespace Users.Application.UnitTests.Commands;
@@ -14,12 +15,18 @@ public class RegisterUserCommandHandlerTests
     private readonly RegisterUserCommandHandler _handler;
     private readonly Mock<IUserRepository> _mockUserRepository;
     private readonly Mock<IJwtTokenGenerator> _mockJwtGenerator;
+    private readonly Mock<IEmailNotification> _mockEmailConfirmation;
 
     public RegisterUserCommandHandlerTests()
     {
         _mockUserRepository = new Mock<IUserRepository>();
         _mockJwtGenerator = new Mock<IJwtTokenGenerator>();
-        _handler = new(_mockUserRepository.Object, _mockJwtGenerator.Object);
+        _mockEmailConfirmation = new Mock<IEmailNotification>();
+
+        _handler = new(
+            _mockUserRepository.Object,
+            _mockJwtGenerator.Object,
+            _mockEmailConfirmation.Object);
     }
 
     [Fact]

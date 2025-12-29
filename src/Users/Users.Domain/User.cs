@@ -11,6 +11,8 @@ public class User
     public bool IsEmailVerified { get; private set; }
     public string Password { get; private set; } = string.Empty;
     public UserType UserType { get; private set; } = UserType.Admin;
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
     private User(Guid id, string firstName, string lastName, string email, string password)
     {
@@ -19,6 +21,7 @@ public class User
         LastName = lastName;
         Email = email;
         Password = password;
+        CreatedAt = DateTime.UtcNow;
     }
 
     public static User Create(string firstName, string lastName, string email, string password)

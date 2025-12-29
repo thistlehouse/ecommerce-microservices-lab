@@ -2,12 +2,13 @@ namespace Users.Application.Common.Abstractions.Services.EmailNotifications;
 
 public sealed class MessageBuilder
 {
-    public string SmtpHost { get; set; } = string.Empty;
-    public int Port { get; set; }
-    public string From { get; set; } = string.Empty;
-    public string To { get; set; } = string.Empty;
-    public string Subject { get; set; } = string.Empty;
-    public string Body { get; set; } = string.Empty;
+    public string SmtpHost { get; private set; } = string.Empty;
+    public int Port { get; private set; }
+    public string From { get; private set; } = string.Empty;
+    public string To { get; private set; } = string.Empty;
+    public string Subject { get; private set; } = string.Empty;
+    public string Body { get; private set; } = string.Empty;
+    public string Code { get; private set; } = string.Empty;
 
     public static MessageBuilder New()
     {
@@ -41,25 +42,34 @@ public sealed class MessageBuilder
 
     public MessageBuilder WithBody(string body)
     {
-        Body = body;
+        Body = $"{body}";
+        return this;
+    }
+
+    public MessageBuilder WithCode(string code)
+    {
+        Code = code;
         return this;
     }
 
     public Message BuildEmailConfirmationMessage()
     {
+        Body += " " + Code;
+
         return EmailConfirmationMessage.Create(
             SmtpHost,
             Port,
             From,
             To,
             Subject,
-            Body);
+            Body,
+            Code);
     }
 }
 
 public sealed class EmailConfirmationMessage : Message
 {
-    public string? Token { get; set; }
+    public string Code { get; private set; }
 
     private EmailConfirmationMessage(
         string smtpHost,
@@ -67,7 +77,8 @@ public sealed class EmailConfirmationMessage : Message
         string from,
         string to,
         string subject,
-        string body)
+        string body,
+        string code)
     {
         SmtpHost = smtpHost;
         Port = port;
@@ -75,6 +86,7 @@ public sealed class EmailConfirmationMessage : Message
         To = to;
         Subject = subject;
         Body = body;
+        Code = code;
     }
 
     public static EmailConfirmationMessage Create(
@@ -83,6 +95,7 @@ public sealed class EmailConfirmationMessage : Message
         string from,
         string to,
         string subject,
-        string body) =>
-        new(smtpHost, port, from, to, subject, body);
+        string body,
+        string code) =>
+        new(smtpHost, port, from, to, subject, body, code);
 }

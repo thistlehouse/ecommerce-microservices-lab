@@ -4,7 +4,7 @@ namespace Users.Application.Common.Abstractions.Repositories;
 
 public interface IUserRepository
 {
-    void Create(User user);
+    void Add(User user);
     User? GetByEmail(string email);
     void ConfirmEmail(string email);
 }

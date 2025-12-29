@@ -13,7 +13,7 @@ public class UserRepository : IUserRepository
         user?.ConfirmEmailVerification();
     }
 
-    public void Create(User user)
+    public void Add(User user)
     {
         _users.Add(user);
     }

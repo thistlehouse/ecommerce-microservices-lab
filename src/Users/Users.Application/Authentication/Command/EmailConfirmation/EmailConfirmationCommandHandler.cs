@@ -19,7 +19,6 @@ public sealed class EmailConfirmationCommandHandler(
     {
         await Task.CompletedTask;
 
-
         if (_codeRepository.Get(command.Code) is not Code code)
         {
             return Error.Validation("InvalidCode", "Code is invalid");

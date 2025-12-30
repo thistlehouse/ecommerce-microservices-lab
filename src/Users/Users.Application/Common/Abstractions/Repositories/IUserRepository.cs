@@ -6,5 +6,6 @@ public interface IUserRepository
 {
     void Add(User user);
     User? GetByEmail(string email);
-    void ConfirmEmail(string email);
+    User? GetById(Guid userId);
+    void PatchUser(User user);
 }

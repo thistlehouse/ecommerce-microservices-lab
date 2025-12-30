@@ -26,6 +26,11 @@ public sealed class LoginUserQueryHandler(
             return Error.NotFound("UserNotFound", "User was not found.");
         }
 
+        if (!user.IsEmailVerified)
+        {
+            return Error.Failure("EmailNotConfirmed", "Email was not yet confirmed");
+        }
+
         if (user.Password != query.Password)
         {
             return Error.Validation("InvalidCredentials", "Credentials are not valid");

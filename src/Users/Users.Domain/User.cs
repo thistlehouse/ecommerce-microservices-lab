@@ -29,7 +29,7 @@ public class User
         return new(Guid.NewGuid(), firstName, lastName, email, password);
     }
 
-    public void ConfirmEmailVerification()
+    public void MarkEmailAsVerified()
     {
         IsEmailVerified = true;
     }

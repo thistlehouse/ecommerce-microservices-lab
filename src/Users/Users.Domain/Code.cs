@@ -12,18 +12,27 @@ public sealed class Code
     public DateTime? UsedAt { get; private set; }
     public CodePurpose Purpose { get; private set; }
 
-    private Code(Guid id, Guid userId, string value, CodePurpose purpose, DateTime? expiresAt = null)
+    private Code(Guid id, Guid userId, string value, CodePurpose purpose, int expiresInMinutes)
     {
         Id = id;
         UserId = userId;
         Value = value;
         Purpose = purpose;
         CreatedAt = DateTime.UtcNow;
-        ExpiresAt = expiresAt is not null ? expiresAt.Value : CreatedAt.AddMinutes(5);
+        ExpiresAt = CreatedAt.AddMinutes(expiresInMinutes);
     }
 
-    public static Code Create(Guid userId, string value, CodePurpose purpose) =>
-        new(Guid.NewGuid(), userId, value, purpose);
+    public static Code Create(
+        Guid userId,
+        string value,
+        CodePurpose purpose,
+        int expiresInMinutes = 5) =>
+        new(
+            Guid.NewGuid(),
+            userId,
+            value,
+            purpose,
+            expiresInMinutes);
 
     public void MarkAsUsed(DateTime utcNow)
     {

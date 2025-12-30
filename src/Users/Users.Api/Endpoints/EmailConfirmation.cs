@@ -1,4 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
+using ErrorOr;
+using MediatR;
+using Users.Api.Errors;
+using Users.Application.Authentication.Command.EmailConfirmation;
 using Users.Application.Common.Abstractions.Repositories;
 using Users.Domain;
 
@@ -10,15 +13,16 @@ public sealed class EmailConfirmation : IEndpoint
     {
         app.MapPost(
             "email/confirmation",
-            ([FromQuery] string email, IUserRepository userRepository) =>
+            async (ISender sender, ConfirmationRequest request) =>
         {
-            User? user = userRepository.GetByEmail(email);
-            if (user is null)
-            {
-                Results.NotFound();
-            }
+            EmailConfirmationCommand command = new(request.ConfirmationCode);
+            ErrorOr<Unit> result = await sender.Send(command, default);
 
-            userRepository.ConfirmEmail(email);
+            return result.Match(
+                _ => Results.Ok(),
+                errors => ApiErrors.Problem(errors));
         });
     }
+
+    private sealed record ConfirmationRequest(string ConfirmationCode);
 }

@@ -16,4 +16,10 @@ public sealed class CodeRepository : ICodeRepository
     {
         return _codes.FirstOrDefault(c => c.Value.Equals(code));
     }
+
+    public void PatchUsedAt(Code code)
+    {
+        int idx = _codes.IndexOf(code);
+        _codes[idx] = code;
+    }
 }

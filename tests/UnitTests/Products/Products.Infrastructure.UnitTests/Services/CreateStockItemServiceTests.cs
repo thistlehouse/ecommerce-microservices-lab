@@ -14,14 +14,14 @@ public class CreateStockItemServiceTests
     [Fact]
     public async Task Service_ShouldSendAsyncStockItem_And_WhenResponseIs200()
     {
-        var (_mockHttpMessageHandler, factory) = HttpMessageHandlerMocker.MockIHttpClientFactory(HttpStatusCode.OK);
+        var httpMock = HttpClientMock.Create(HttpStatusCode.OK);
+        CreateStockItemService service = new(httpMock.Factory.Object);
 
-        CreateStockItemService service = new(factory.Object);
         Func<Task> act = () => service.SendAsync(Product.Create("ProductTest", "ProductTest", 10m));
 
         await act.Should().NotThrowAsync();
 
-        _mockHttpMessageHandler.Protected()
+        httpMock.Handler.Protected()
             .Verify(
                 "SendAsync",
                 Times.Once(),
@@ -32,9 +32,9 @@ public class CreateStockItemServiceTests
     [Fact]
     public async Task Service_ShouldNotSendAsyncStockItem_And_WhenResponseIsNotSuccess()
     {
-        var (_mockHttpMessageHandler, factory) = HttpMessageHandlerMocker.MockIHttpClientFactory(HttpStatusCode.InternalServerError);
+        var httpMock = HttpClientMock.Create(HttpStatusCode.OK);
+        CreateStockItemService service = new(httpMock.Factory.Object);
 
-        CreateStockItemService service = new(factory.Object);
         Func<Task> act = () => service.SendAsync(Product.Create("ProductTest", "ProductTest", 10m));
 
         await act.Should().ThrowAsync();

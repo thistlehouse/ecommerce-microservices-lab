@@ -6,5 +6,6 @@ public interface ICodeRepository
 {
     void Add(Code code);
     Code? Get(string code);
-    void PatchUsedAt(Code code);
+    Code? GetByUserId(Guid userId);
+    void Patch(Code code);
 }

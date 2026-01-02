@@ -58,7 +58,16 @@ public sealed class RegisterUserCommandHandler(
 
         _userRepository.Add(user);
         _codeRepository.Add(code);
-        _emailNotification.SendNotification(message);
+
+        // TODO: retry
+        try
+        {
+            _emailNotification.SendNotification(message);
+        }
+        catch (Exception)
+        {
+            // TODO: Log failure
+        }
 
         AuthenticationResult result = new(user.Id, command.Email, token);
         return result;

@@ -40,4 +40,9 @@ public sealed class Code
 
         UsedAt = utcNow;
     }
+
+    public void RenewCode(string value)
+    {
+        Value = value;
+    }
 }

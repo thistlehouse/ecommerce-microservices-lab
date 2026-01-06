@@ -32,7 +32,7 @@ public class LoginUserQueryHandlerTests
             .Returns(CreateUserUtils.CreateUser());
 
         string token = "token.token.token";
-        _mockJwtGenerator.Setup(m => m.GenerateUserToken(It.IsAny<User>()))
+        _mockJwtGenerator.Setup(m => m.GenerateToken(It.IsAny<User>()))
             .Returns(token);
 
         ErrorOr<AuthenticationResult> result = await _handler.Handle(query, default);
@@ -42,7 +42,7 @@ public class LoginUserQueryHandlerTests
         result.Value.Token.Should().Be(token);
 
         _mockUserRepository.Verify(m => m.GetByEmail(query.Email), Times.Once);
-        _mockJwtGenerator.Verify(m => m.GenerateUserToken(It.IsAny<User>()), Times.Once);
+        _mockJwtGenerator.Verify(m => m.GenerateToken(It.IsAny<User>()), Times.Once);
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class LoginUserQueryHandlerTests
         result.FirstError.Code.Should().Be("UserNotFound");
 
         _mockUserRepository.Verify(m => m.GetByEmail(query.Email), Times.Once);
-        _mockJwtGenerator.Verify(m => m.GenerateUserToken(It.IsAny<User>()), Times.Never);
+        _mockJwtGenerator.Verify(m => m.GenerateToken(It.IsAny<User>()), Times.Never);
     }
 
     [Fact]
@@ -76,6 +76,6 @@ public class LoginUserQueryHandlerTests
         result.FirstError.Code.Should().Be("InvalidCredentials");
 
         _mockUserRepository.Verify(m => m.GetByEmail(query.Email), Times.Once);
-        _mockJwtGenerator.Verify(m => m.GenerateUserToken(It.IsAny<User>()), Times.Never);
+        _mockJwtGenerator.Verify(m => m.GenerateToken(It.IsAny<User>()), Times.Never);
     }
 }

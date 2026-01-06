@@ -6,6 +6,7 @@ using Users.Application.Common.Abstractions.Services;
 using Users.Application.Common.Abstractions.Services.ConfirmationCodes;
 using Users.Application.Common.Abstractions.Services.EmailNotifications;
 using Users.Domain;
+using Users.Domain.Enums;
 
 namespace Users.Application.Authentication.Command.RegisterUser;
 
@@ -39,16 +40,17 @@ public sealed class RegisterUserCommandHandler(
             command.FirstName,
             command.LastName,
             command.Email,
-            command.Password);
+            command.Password,
+            ClientType.Customer);
 
         // TODO: hash password
 
-        string token = _jwtTokenGenerator.GenerateUserToken(user);
+        string token = _jwtTokenGenerator.GenerateToken(user);
         string value = _confirmationCodeGenerator.GenerateConfirmationCode(6);
         Code code = Code.Create(user.Id, value, Domain.Enums.CodePurpose.EmailConfirmation);
 
         Message message = MessageBuilder.New()
-            .WithSmtpHost("localhost", 1025)
+            .WithSmtpHost("172.18.16.251", 1025)
             .FromEmail(user.Email)
             .ToEmail("no-reply@ecommerce.com")
             .WithSubject("Email Confirmation")
@@ -62,7 +64,7 @@ public sealed class RegisterUserCommandHandler(
         // TODO: retry
         try
         {
-            _emailNotification.SendNotification(message);
+            await _emailNotification.SendNotificationAsync(message);
         }
         catch (Exception)
         {

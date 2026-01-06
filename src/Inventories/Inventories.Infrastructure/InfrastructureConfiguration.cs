@@ -1,4 +1,5 @@
 using Inventories.Application;
+using Inventories.Infrastructure.Authentication;
 using Inventories.Infrastructure.Persistence;
 using Inventories.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,11 @@ public static class InfrastructureConfigurations
         services.AddDbContext<InventoryDbContext>(options =>
             options.UseNpgsql(
                 configuration.GetConnectionString("EcommerceDatabase"),
-                builder => builder.MigrationsHistoryTable("__EFMigrationsHistory", "Inventories")));
+                npgsqlOptions =>
+                {
+                    npgsqlOptions.EnableRetryOnFailure();
+                    npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "Users");
+                }));
 
         return services;
     }

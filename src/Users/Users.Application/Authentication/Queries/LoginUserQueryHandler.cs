@@ -36,7 +36,7 @@ public sealed class LoginUserQueryHandler(
             return Error.Validation("InvalidCredentials", "Credentials are not valid");
         }
 
-        string token = _jwtTokenGenerator.GenerateUserToken(user);
+        string token = _jwtTokenGenerator.GenerateToken(user);
         AuthenticationResult result = new(user.Id, user.Email, token);
         return result;
     }

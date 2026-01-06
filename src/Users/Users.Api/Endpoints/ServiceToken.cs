@@ -12,19 +12,18 @@ public sealed class ServiceToken : IEndpoint
     {
         app.MapPost(
             "/token",
-            async (ISender sender, ServiceTokenRequest request) =>
+            async (ISender sender, ServiceRequest request) =>
         {
-            ServiceTokenCommand command = new(request.ClientId, request.ClientSecret, request.Scopes);
+            ServiceTokenCommand command = new(request.ServiceName, request.Secret);
             ErrorOr<string> result = await sender.Send(command, default);
 
             return result.Match(
-                token => Results.Ok(token),
+                token => Results.Ok(new { token }),
                 errors => ApiErrors.Problem(errors));
         });
     }
 
-    private sealed record ServiceTokenRequest(
-        [property: JsonPropertyName(name: "client_id")] string ClientId,
-        [property: JsonPropertyName(name: "client_secret")] string ClientSecret,
-        string Scopes);
+    private sealed record ServiceRequest(
+        string ServiceName,
+        string Secret);
 }

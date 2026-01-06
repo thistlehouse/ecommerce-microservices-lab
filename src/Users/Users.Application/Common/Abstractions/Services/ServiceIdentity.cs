@@ -1,11 +1,11 @@
+using Users.Domain;
+
 namespace Users.Application.Common.Abstractions.Services;
 
-public sealed class ServiceIdentity
+public sealed class ServiceIdentity : Entity
 {
-    public string ClientId { get; set; } = string.Empty;
-    public string ClientSecret { get; set; } = string.Empty;
-    public string Scopes { get; set; } = string.Empty;
-    public string DisplayName { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Secret { get; set; } = string.Empty;
 
-    public bool IsSecretValid(string secret) => ClientSecret.Equals(secret);
+    public bool IsSecretValid(string value) => Secret.Equals(value);
 }

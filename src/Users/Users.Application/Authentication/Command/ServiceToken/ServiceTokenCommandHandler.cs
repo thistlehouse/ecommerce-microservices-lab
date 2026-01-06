@@ -16,18 +16,18 @@ public sealed class ServiceTokenCommandHandler(
     {
         await Task.CompletedTask;
 
-        ServiceIdentity? serviceIdentity = _serviceIdentityProvider.GetByClientId(command.ClientId);
+        ServiceIdentity? serviceIdentity = _serviceIdentityProvider.GetService(command.ServiceName);
         if (serviceIdentity is null)
         {
-            return Error.Unauthorized("Invalid Client Credentials");
+            return Error.Unauthorized("Service does not exist");
         }
 
-        if (!serviceIdentity.IsSecretValid(command.ClientSecret))
+        if (!serviceIdentity.IsSecretValid(command.Secret))
         {
             return Error.Unauthorized("Invalid Client Credentials");
         }
 
-        string token = _jwtTokenGenerator.GenerateServiceToken(serviceIdentity);
+        string token = _jwtTokenGenerator.GenerateToken(serviceIdentity);
         return token;
     }
 }

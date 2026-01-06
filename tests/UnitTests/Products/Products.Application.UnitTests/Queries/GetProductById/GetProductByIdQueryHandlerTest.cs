@@ -2,6 +2,8 @@ using ErrorOr;
 using FluentAssertions;
 using Moq;
 using Products.Application.Common.Abstractions;
+using Products.Application.Common.Abstractions.Services.StockItems;
+using Products.Application.Queries.Common;
 using Products.Application.Queries.GetProduct;
 using Products.Domain.Products;
 
@@ -11,11 +13,13 @@ public sealed class GetProductByIdQueryHandlerTest
 {
     private readonly GetProductByIdQueryHandler _handler;
     private readonly Mock<IProductRepository> _mockProductRepository;
+    private readonly Mock<IStockItemService> _mockStockItemService;
 
     public GetProductByIdQueryHandlerTest()
     {
         _mockProductRepository = new Mock<IProductRepository>();
-        _handler = new GetProductByIdQueryHandler(_mockProductRepository.Object);
+        _mockStockItemService = new Mock<IStockItemService>();
+        _handler = new GetProductByIdQueryHandler(_mockProductRepository.Object, _mockStockItemService.Object);
     }
 
     [Fact]
@@ -29,7 +33,7 @@ public sealed class GetProductByIdQueryHandlerTest
         _mockProductRepository.Setup(m => m.GetById(product.Id))
             .Returns(product);
 
-        ErrorOr<Product> result = await _handler.Handle(
+        ErrorOr<ProductResult> result = await _handler.Handle(
             new GetProductByIdQuery(product.Id),
             default);
 
@@ -44,7 +48,7 @@ public sealed class GetProductByIdQueryHandlerTest
         _mockProductRepository.Setup(m => m.GetById(It.IsAny<Guid>()))
             .Returns((Product)null!);
 
-        ErrorOr<Product> result = await _handler.Handle(
+        ErrorOr<ProductResult> result = await _handler.Handle(
             new GetProductByIdQuery(Guid.NewGuid()),
             default);
 

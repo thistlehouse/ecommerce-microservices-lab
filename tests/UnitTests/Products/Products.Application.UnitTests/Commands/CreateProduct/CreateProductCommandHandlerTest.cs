@@ -3,6 +3,7 @@ using FluentAssertions;
 using Moq;
 using Products.Application.Commands.CreateProducts;
 using Products.Application.Common.Abstractions;
+using Products.Application.Common.Abstractions.Services.StockItems;
 using Products.Contracts.Products;
 using Products.Domain.Products;
 
@@ -12,13 +13,13 @@ public class CreateProductCommandHandlerTest
 {
     private readonly CreateProductCommandHandler handler;
     private readonly Mock<IProductRepository> _mockProductRepository;
-    private readonly Mock<ICreateStockItemService> _mockCreateItemSockService;
+    private readonly Mock<IStockItemService> _mockStockItemService;
 
     public CreateProductCommandHandlerTest()
     {
         _mockProductRepository = new Mock<IProductRepository>();
-        _mockCreateItemSockService = new Mock<ICreateStockItemService>();
-        handler = new CreateProductCommandHandler(_mockProductRepository.Object, _mockCreateItemSockService.Object);
+        _mockStockItemService = new Mock<IStockItemService>();
+        handler = new CreateProductCommandHandler(_mockProductRepository.Object, _mockStockItemService.Object);
     }
 
     [Fact]
@@ -34,6 +35,6 @@ public class CreateProductCommandHandlerTest
         result.Should().NotBeNull();
 
         _mockProductRepository.Verify(m => m.Add(It.IsAny<Product>()), Times.Once);
-        _mockCreateItemSockService.Verify(m => m.SendAsync(It.IsAny<Product>()), Times.Once);
+        _mockStockItemService.Verify(m => m.CreateStockItem(It.IsAny<Product>()), Times.Once);
     }
 }

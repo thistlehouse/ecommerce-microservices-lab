@@ -5,6 +5,5 @@ namespace Users.Application.Authentication.Command.ServiceToken;
 
 
 public sealed record ServiceTokenCommand(
-    string ClientId,
-    string ClientSecret,
-    string Scopes) : IRequest<ErrorOr<string>>;
+    string ServiceName,
+    string Secret) : IRequest<ErrorOr<string>>;

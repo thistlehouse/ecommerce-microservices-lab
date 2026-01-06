@@ -1,31 +1,32 @@
 using Microsoft.Extensions.Options;
 using Users.Application.Common.Abstractions.Services;
-using Users.Infrastructure.Authentication;
+using Users.Infrastructure.Security;
 
 namespace Users.Infrastructure.Services;
 
 public sealed class ServiceIdentityProvider(
-    IOptions<ServiceIdentitiesSettings> serviceIdentitiesSettings)
+    IOptions<ServicesSettings> options)
     : IServiceIdentityProvider
 {
-    private readonly ServiceIdentitiesSettings _serviceIdentitiesSettings = serviceIdentitiesSettings.Value;
+    private readonly ServicesSettings _servicesSettings = options.Value;
 
-    public ServiceIdentity? GetByClientId(string clientId)
+    public ServiceIdentity? GetService(string name)
     {
-        ServiceIdentitySettings? serviceIdentitySettings = _serviceIdentitiesSettings
-            .ServiceIdentities
-            .FirstOrDefault(s => s.ClientId.Equals(clientId));
+        Service? service = _servicesSettings
+            .Services
+            .FirstOrDefault(s => s.Name.Equals(name));
 
-        if (serviceIdentitySettings is null)
+        if (service is null)
         {
             return null;
         }
 
         ServiceIdentity serviceIdentity = new()
         {
-            ClientId = serviceIdentitySettings!.ClientId,
-            ClientSecret = serviceIdentitySettings.ClientSecret,
-            Scopes = serviceIdentitySettings.Scopes,
+            Id = Guid.NewGuid(),
+            Name = service.Name,
+            Secret = service.Secret,
+            ClientType = Domain.Enums.ClientType.Service,
         };
 
         return serviceIdentity;

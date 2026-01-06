@@ -13,16 +13,16 @@ public static class PresentationConfiguration
         ConfigurationManager configuration)
     {
         return services
-            .AddAuthentication(configuration)
-            .AddAuthorization();
+            .AddAuthN(configuration)
+            .AddAuthZ();
     }
 
-    public static IServiceCollection AddAuthentication(
+    public static IServiceCollection AddAuthN(
         this IServiceCollection services,
         ConfigurationManager configuration)
     {
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer("Bearer", options => options.TokenValidationParameters = new()
+            .AddJwtBearer(options => options.TokenValidationParameters = new()
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
@@ -37,18 +37,19 @@ public static class PresentationConfiguration
         return services;
     }
 
-    public static IServiceCollection AddAuthorization(this IServiceCollection services)
+    public static IServiceCollection AddAuthZ(this IServiceCollection services)
     {
         services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
 
         string[] permissions = GetPermissions();
 
-        services.AddAuthorization(config =>
+        services.AddAuthorization(policy =>
         {
             foreach (string permission in permissions)
             {
-                config.AddPolicy(permission, policy =>
-                    policy.Requirements.Add(new PermissionRequirement(permission)));
+                policy.AddPolicy(
+                    permission,
+                    policy => policy.Requirements.Add(new PermissionRequirement(permission)));
             }
         });
 
@@ -60,12 +61,12 @@ public static class PresentationConfiguration
     {
         string[] permissions =
         [
-            "product.read",
-            "order.create",
-            "order.cancel",
-            "product.create",
-            "product.update",
-            "product.delete",
+            "product:read",
+            "order:write",
+            "order:cancel",
+            "product:write",
+            "product:update",
+            "product:delete",
         ];
 
         return permissions;

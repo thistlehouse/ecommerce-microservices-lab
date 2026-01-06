@@ -45,7 +45,7 @@ public sealed class ResendEmailConfirmationCommandHandler(
 
         try
         {
-            _emailNotification.SendNotification(message);
+            await _emailNotification.SendNotificationAsync(message);
         }
         catch (Exception)
         {

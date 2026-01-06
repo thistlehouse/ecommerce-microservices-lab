@@ -1,5 +1,6 @@
 using ErrorOr;
 using Inventories.Api.Errors;
+using Inventories.Api.Permissions;
 using Inventories.Application.Commands.CreateStockItem;
 using MediatR;
 
@@ -20,10 +21,11 @@ public sealed class CreateStockItem : IEndpoint
 
             ErrorOr<Unit> response = await sender.Send(command);
 
-            response.Match(
+            return response.Match(
                 item => Results.Ok(),
                 errors => ApiErrors.Problem(errors));
         });
+        // .RequireAuthorization(Permission.InventoryWrite);
     }
 
     public record StockItemRequest(Guid Id, string Name, int Units);

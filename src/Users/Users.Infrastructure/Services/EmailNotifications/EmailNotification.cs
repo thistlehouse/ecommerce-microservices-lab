@@ -6,18 +6,19 @@ namespace Users.Infrastructure.Services.EmailNotifications;
 
 public sealed class EmailNotification : IEmailNotification
 {
-    public void SendNotification(Message message)
+    public async Task SendNotificationAsync(Message message)
     {
         using SmtpClient client = new(message.SmtpHost, message.Port);
         client.DeliveryMethod = SmtpDeliveryMethod.Network;
         client.EnableSsl = false;
-        client.Credentials = CredentialCache.DefaultNetworkCredentials;
+        client.Credentials = null;
+        client.Timeout = 5000;
 
         using MailMessage mailMessage = new(message.From, message.To, message.Subject, message.Body)
         {
             IsBodyHtml = true,
         };
 
-        client.Send(mailMessage);
+        await client.SendMailAsync(mailMessage);
     }
 }

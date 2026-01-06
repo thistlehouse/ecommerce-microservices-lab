@@ -1,7 +1,9 @@
+using System.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Users.Application.Common.Abstractions.Authorization;
 using Users.Application.Common.Abstractions.Repositories;
 using Users.Application.Common.Abstractions.Services;
 using Users.Application.Common.Abstractions.Services.ConfirmationCodes;
@@ -10,6 +12,7 @@ using Users.Infrastructure.Authentication;
 using Users.Infrastructure.Authorization;
 using Users.Infrastructure.Persistence;
 using Users.Infrastructure.Persistence.Repositories;
+using Users.Infrastructure.Security;
 using Users.Infrastructure.Services;
 using Users.Infrastructure.Services.Confirmation;
 using Users.Infrastructure.Services.EmailNotifications;
@@ -23,6 +26,7 @@ public static class InfrastructureConfiguration
         ConfigurationManager configuration)
     {
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        services.AddSingleton<IPermissionProvider, PermissionProvider>();
         services.AddTransient<IEmailNotification, EmailNotification>();
         services.AddTransient<IConfirmationCodeGenerator, ConfirmationCodeGenerator>();
 
@@ -48,8 +52,8 @@ public static class InfrastructureConfiguration
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddSingleton<IServiceIdentityProvider, ServiceIdentityProvider>();
 
-        services.Configure<ServiceIdentitiesSettings>(
-            configuration.GetSection(ServiceIdentitiesSettings.SectionName));
+        services.Configure<ServicesSettings>(
+            configuration.GetSection(ServicesSettings.SectionName));
 
         return services;
     }
@@ -64,7 +68,11 @@ public static class InfrastructureConfiguration
         services.AddDbContext<UserDbContext>(options =>
             options.UseNpgsql(
                 configuration.GetConnectionString("ECommerceDatabase"),
-                b => b.MigrationsHistoryTable("__EFMigrationsHistory", "Users")));
+                npgsqlOptions =>
+                {
+                    npgsqlOptions.EnableRetryOnFailure();
+                    npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "Users");
+                }));
 
         return services;
     }

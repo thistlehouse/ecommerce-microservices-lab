@@ -56,7 +56,7 @@ public class ResendEmailConfirmationCommandHandlerTests
         _mockUserRepository.Verify(m => m.GetByEmail(command.UserEmail), Times.Once);
         _mockCodeRepository.Verify(m => m.GetByUserId(user.Id), Times.Once);
         _mockConfirmationCodeGenerator.Verify(m => m.GenerateConfirmationCode(It.IsAny<double>()), Times.Once);
-        _mockEmailNotification.Verify(m => m.SendNotification(It.IsAny<Message>()), Times.Once);
+        _mockEmailNotification.Verify(m => m.SendNotificationAsync(It.IsAny<Message>()), Times.Once);
     }
 
 
@@ -77,6 +77,6 @@ public class ResendEmailConfirmationCommandHandlerTests
         _mockUserRepository.Verify(m => m.GetByEmail(command.UserEmail), Times.Once);
         _mockCodeRepository.Verify(m => m.GetByUserId(user.Id), Times.Never);
         _mockConfirmationCodeGenerator.Verify(m => m.GenerateConfirmationCode(It.IsAny<double>()), Times.Never);
-        _mockEmailNotification.Verify(m => m.SendNotification(It.IsAny<Message>()), Times.Never);
+        _mockEmailNotification.Verify(m => m.SendNotificationAsync(It.IsAny<Message>()), Times.Never);
     }
 }

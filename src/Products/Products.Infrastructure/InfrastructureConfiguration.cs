@@ -2,9 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Products.Application.Common.Abstractions;
+using Products.Application.Common.Abstractions.Services;
+using Products.Application.Common.Abstractions.Services.StockItems;
 using Products.Infrastructure.Persistence;
 using Products.Infrastructure.Persistence.Repositories;
 using Products.Infrastructure.Services;
+using Products.Infrastructure.Services.StockItems;
 using StackExchange.Redis;
 
 namespace Products.Infrastructure;
@@ -24,7 +27,9 @@ public static class InfrastructureConfiguration
 
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddTransient<ICreateStockItemService, CreateStockItemService>();
+        services.AddTransient<IStockItemService, StockItemService>();
+        services.AddTransient<ServiceAuthenticationHandler>();
+        services.AddScoped<IServiceTokenProvider, ServiceTokenProvider>();
 
         return services;
     }
@@ -36,8 +41,13 @@ public static class InfrastructureConfiguration
         services.AddScoped<IProductRepository, ProductRepository>();
 
         services.AddDbContext<ProductDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("ECommerceDatabase"),
-            b => b.MigrationsHistoryTable("__EFMigrationsHistory", "Products")));
+            options.UseNpgsql(
+                configuration.GetConnectionString("ECommerceDatabase"),
+                npgsqlOptions =>
+                {
+                    npgsqlOptions.EnableRetryOnFailure();
+                    npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "Products");
+                }));
 
         return services;
     }

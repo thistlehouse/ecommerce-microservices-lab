@@ -1,5 +1,6 @@
 using ErrorOr;
 using Inventories.Api.Errors;
+using Inventories.Api.Permissions;
 using Inventories.Application.Commands.PatchStockItem;
 using Inventories.Domain.StockItems;
 using MediatR;
@@ -25,7 +26,8 @@ public sealed class PatchStockItemUnits : IEndpoint
             return result.Match(
                 _ => Results.NoContent(),
                 errors => ApiErrors.Problem(errors));
-        });
+        })
+        .RequireAuthorization(Permission.InventoryWrite);
     }
 
     private sealed record PatchStockItemsRequest(List<PatchStockItemUnitsRequest> StockItems);

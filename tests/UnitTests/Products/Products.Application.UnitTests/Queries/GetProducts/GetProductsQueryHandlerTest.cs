@@ -2,8 +2,10 @@ using ErrorOr;
 using FluentAssertions;
 using Moq;
 using Products.Application.Common.Abstractions;
+using Products.Application.Common.Abstractions.Services.StockItems;
 using Products.Application.Queries.GetProducts;
 using Products.Domain.Products;
+using Products.Domain.StockItems;
 
 namespace Products.Application.UnitTests.Queries.GetProducts;
 
@@ -11,11 +13,13 @@ public sealed class GetProductsQueryHandlerTest
 {
     private readonly GetProductsQueryHandler _handler;
     private readonly Mock<IProductRepository> _mockProductRepository;
+    private readonly Mock<IStockItemService> _mockStockItemService;
 
     public GetProductsQueryHandlerTest()
     {
         _mockProductRepository = new Mock<IProductRepository>();
-        _handler = new GetProductsQueryHandler(_mockProductRepository.Object);
+        _mockStockItemService = new Mock<IStockItemService>();
+        _handler = new GetProductsQueryHandler(_mockProductRepository.Object, _mockStockItemService.Object);
     }
 
     [Fact]
@@ -35,6 +39,9 @@ public sealed class GetProductsQueryHandlerTest
                 totalItems = products.Count();
             })
             .Returns(products);
+
+        _mockStockItemService.Setup(m => m.GetStockItems(It.IsAny<IEnumerable<Guid>>()))
+            .ReturnsAsync(new List<StockItem>());
 
         ErrorOr<GetProductsResult> result = await _handler.Handle(
             query,

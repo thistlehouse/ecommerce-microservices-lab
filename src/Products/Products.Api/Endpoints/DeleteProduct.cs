@@ -2,6 +2,7 @@ using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Products.Api.Errors;
+using Products.Api.Permissions;
 using Products.Application.Commands.DeleteProduct;
 
 namespace Products.Api.Endpoints;
@@ -22,6 +23,6 @@ public sealed class DeleteProduct : IEndpoint
                 _ => Results.NoContent(),
                 errors => ApiErrors.Problem(errors));
         })
-        .RequireAuthorization("product.delete");
+        .RequireAuthorization(Permission.ProductDelete);
     }
 }

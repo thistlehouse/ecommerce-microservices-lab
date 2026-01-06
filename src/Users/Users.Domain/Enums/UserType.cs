@@ -1,7 +1,8 @@
 namespace Users.Domain.Enums;
 
-public enum UserType
+public enum ClientType
 {
     Customer,
     Admin,
+    Service,
 }

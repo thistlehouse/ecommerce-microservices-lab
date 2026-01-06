@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using MediatR;
 using Products.Application.Common.Abstractions;
+using Products.Application.Common.Abstractions.Services.StockItems;
 using Products.Contracts.Products;
 using Products.Domain.Products;
 
@@ -8,11 +9,11 @@ namespace Products.Application.Commands.CreateProducts;
 
 public sealed class CreateProductCommandHandler(
     IProductRepository productRepository,
-    ICreateStockItemService createStockItem)
+    IStockItemService stockItemService)
     : IRequestHandler<CreateProductCommand, ErrorOr<CreateProductResult>>
 {
     private readonly IProductRepository _productRepository = productRepository;
-    private readonly ICreateStockItemService _createStockItem = createStockItem;
+    private readonly IStockItemService _stockItemService = stockItemService;
 
     public async Task<ErrorOr<CreateProductResult>> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
@@ -27,7 +28,7 @@ public sealed class CreateProductCommandHandler(
         // this will change, but for now will suffice.
         try
         {
-            await _createStockItem.SendAsync(product);
+            await _stockItemService.CreateStockItem(product);
         }
         catch (HttpRequestException e)
         {

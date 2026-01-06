@@ -35,5 +35,56 @@ services:
       - "1025:1025" # SMTP port
       - "8025:8025" # Web UI port
 
+  # user-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/Users/Users.Api/Dockerfile
+  #   container_name: user-service
+  #   environment:
+  #     ASPNETCORE_ENVIRONMENT: Development
+  #     ConnectionStrings__ECommerceDatabase: Host=postgres;Database=ecommerce;Username=postgres;Password=postgres
+  #   ports:
+  #     - "5001:5000"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+
+  # product-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/Products/Products.Api/Dockerfile
+  #   container_name: product-service
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+  #   environment:
+  #     ASPNETCORE_ENVIRONMENT: Development
+  #     ConnectionStrings__ECommerceDatabase: Host=postgres;Database=ecommerce;Username=postgres;Password=postgres
+  #     USER_SERVICE_URL: http://user-service:5000
+  #     INVENTORY_SERVICE_URL: http://inventory-service:5000
+  #     ConnectionStrings__Redis: redis:6379,abortConnect=false
+  #   ports:
+  #     - "5002:5000"
+
+  # inventory-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/Inventories/Inventories.Api/Dockerfile
+  #   container_name: inventory-service
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   environment:
+  #     ASPNETCORE_ENVIRONMENT: Development
+  #     ConnectionStrings__DefaultConnection: Host=postgres;Database=ecommerce;Username=postgres;Password=postgres
+  #     SERVICEIDENTITY_SETTINGS__ServiceIdentities__0__ClientId: product-service
+  #     SERVICEIDENTITY_SETTINGS__ServiceIdentities__0__ClientSecret: product-service-secret-32bytes!!
+  #     SERVICEIDENTITY_SETTINGS__ServiceIdentities__1__ClientId: order-service
+  #     SERVICEIDENTITY_SETTINGS__ServiceIdentities__1__ClientSecret: order-service-secret-32bytes!!!!
+  #   ports:
+  #     - "5003:5000"
+
 volumes:
   postgres_data:

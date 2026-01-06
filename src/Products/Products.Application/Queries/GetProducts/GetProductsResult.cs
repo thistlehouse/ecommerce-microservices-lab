@@ -1,9 +1,10 @@
-using Products.Domain.Products;
+using Products.Application.Queries.Common;
+using static Products.Application.Queries.GetProducts.GetProductsQueryHandler;
 
 namespace Products.Application.Queries.GetProducts;
 
 public record GetProductsResult(
-    List<Product> Products,
+    List<ProductResult> Products,
     int PageIndex,
     int PageSize,
     int TotalItems)

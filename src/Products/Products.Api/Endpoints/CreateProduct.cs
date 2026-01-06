@@ -1,5 +1,6 @@
 using MediatR;
 using Products.Api.Errors;
+using Products.Api.Permissions;
 using Products.Application.Commands.CreateProducts;
 
 namespace Products.Api.Endpoints;
@@ -19,7 +20,7 @@ public sealed class CreateProduct : IEndpoint
                 product => Results.Created("products/create", product),
                 errors => ApiErrors.Problem(errors));
         })
-        .RequireAuthorization("product.create");
+        .RequireAuthorization(Permission.ProductWrite);
     }
 
     public record CreateProductRequest(string Name, string Description, decimal Price);

@@ -20,6 +20,17 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.MapEndpoints();
+// using IServiceScope? scope = app.Services.CreateScope();
+// UserDbContext context = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+// context.Database.Migrate();
+
 app.UseHttpsRedirection();
+
+app.Use(async (ctx, next) =>
+{
+    Console.WriteLine($" -> Incoming Request {ctx.Request.Method} {ctx.Request.Path}");
+    await next();
+});
+
+app.MapEndpoints();
 app.Run();

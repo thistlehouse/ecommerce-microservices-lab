@@ -57,7 +57,6 @@ public class JwtTokenGenerator(
             new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtPermissionClaimNames.UserType, user.ClientType.ToString())
         ]);
 
         return claims;
@@ -70,7 +69,6 @@ public class JwtTokenGenerator(
             new Claim(JwtRegisteredClaimNames.Sub, service.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Name, service.Name),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtPermissionClaimNames.ServiceType, service.ClientType.ToString())
         ]);
 
         return claims;

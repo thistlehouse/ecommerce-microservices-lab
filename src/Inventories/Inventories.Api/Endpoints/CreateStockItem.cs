@@ -24,8 +24,8 @@ public sealed class CreateStockItem : IEndpoint
             return response.Match(
                 item => Results.Ok(),
                 errors => ApiErrors.Problem(errors));
-        });
-        // .RequireAuthorization(Permission.InventoryWrite);
+        })
+        .RequireAuthorization(Permission.InventoryWrite);
     }
 
     public record StockItemRequest(Guid Id, string Name, int Units);

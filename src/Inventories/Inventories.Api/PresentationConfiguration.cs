@@ -76,10 +76,10 @@ public static class PresentationConfiguration
     {
         string[] permissions =
         [
-            "product:read",
-            "order:cancel",
+            // "product:read",
+            // "order:cancel",
             "inventory:write",
-            "inventory:read"
+            // "inventory:read"
         ];
 
         return permissions;
